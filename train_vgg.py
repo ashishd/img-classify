@@ -65,7 +65,7 @@ labels = np.array(labels)
 # partition the data into training and testing splits using 75% of
 # the data for training and the remaining 25% for testing
 (trainX, testX, trainY, testY) = train_test_split(data,
-	labels, test_size=0.20, random_state=42)
+	labels, test_size=0.25, random_state=42)
 
  
 # convert the labels from integers to vectors (for 2-class, binary
