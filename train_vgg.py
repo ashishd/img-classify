@@ -26,8 +26,6 @@ import os
 ap = argparse.ArgumentParser()
 ap.add_argument("-d", "--dataset", required=True,
 	help="path to input dataset of images")
-ap.add_argument("-i", "--valdataset", required=True,
-	help="path to input validation dataset of images")
 ap.add_argument("-m", "--model", required=True,
 	help="path to output trained model")
 ap.add_argument("-l", "--label-bin", required=True,
@@ -40,15 +38,11 @@ args = vars(ap.parse_args())
 print("[INFO] loading images...")
 data = []
 labels = []
-vdata = []
-vlabels = []
  
 # Grab the image paths and randomise
 imagePaths = sorted(list(paths.list_images(args["dataset"])))
 random.seed(42)
 random.shuffle(imagePaths)
-valImgPaths = sorted(list(paths.list_images(args["valdataset"])))
-random.shuffle(valImgPaths)
  
 # loop over the input training images
 for imagePath in imagePaths:
@@ -64,37 +58,15 @@ for imagePath in imagePaths:
 	label = imagePath.split(os.path.sep)[-2]
 	labels.append(label)
 
-# repeat same loop for the input validation images
-for valImgPath in valImgPaths:
-	vimage = cv2.imread(valImgPath)
-	vimage = cv2.resize(vimage, (64, 64))
-	vdata.append(vimage)
- 
-	# extract the class label from the image path and update the
-	# labels list
-	vlabel = valImgPath.split(os.path.sep)[-2]
-	vlabels.append(vlabel)
- 
 # scale the raw pixel intensities to the range [0, 1]
 data = np.array(data, dtype="float") / 255.0
 labels = np.array(labels)
-vdata = np.array(vdata, dtype="float") / 255.0
-vlabels = np.array(vlabels)
 
-# In general, use the script below to generate training and testing
-# splits, however in this instance there is given training and
-# validation sets.
 # partition the data into training and testing splits using 75% of
 # the data for training and the remaining 25% for testing
-##(trainX, testX, trainY, testY) = train_test_split(data,
-##	labels, test_size=0.25, random_state=42)
-# Training Set
-trainX = data
-trainY = labels
+(trainX, testX, trainY, testY) = train_test_split(data,
+	labels, test_size=0.20, random_state=42)
 
-# Validation Set
-testX = vdata
-testY = vlabels
  
 # convert the labels from integers to vectors (for 2-class, binary
 # classification you should use Keras' to_categorical function
