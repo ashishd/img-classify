@@ -26,9 +26,14 @@ Package was developed for use on Windows 10 x64 machine. Should run on other pla
 If running on a Windows 10 machine, then also install opencv-python with pip.
 
 ## Examples
+To setup model based on training data:
+```
+python train_vgg.py --dataset data\train --model output\smallvggnet.model --label-bin output\smallvggnet_lb.pickle --plot output\smallvggnet.png
+```
+
 To setup model based on training and validation data:
 ```
-python train_vgg.py --dataset data\train --valdataset data\val --model output\smallvggnet.model --label-bin output\smallvggnet_lb.pickle --plot output\smallvggnet.png
+python train2_vgg.py --dataset data\train --valdataset data\val --model output\smallvggnet.model --label-bin output\smallvggnet_lb.pickle --plot output\smallvggnet.png
 ```
 
 To predict on new data:
